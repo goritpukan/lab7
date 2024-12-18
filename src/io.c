@@ -10,23 +10,28 @@ int userChoice(char *message, int numberOfChoices) {
     if (choice < 48 || choice > numberOfChoices + 48) {
       printf(RED"You must enter a number between 0 and %d!\n"RESET, numberOfChoices);
     }
-  }while (choice < 48 || choice > numberOfChoices + 48);
-  return choice;
+  } while (choice < 48 || choice > numberOfChoices + 48);
+  return choice - 48;
 }
-double getDoubleFromUser(char *message, const double min, const double max) {
-  double number = 0;
+
+long double getLongDoubleFromUser(char *message, const long double min, const long double max, const int excludeZero) {
+  long double number = 0.0L;
   char isValid = 0;
   do {
     printf("%s", message);
-    isValid = scanf("%lf", &number);
+    isValid = scanf("%Lf", &number);
     while (getchar() != '\n');
     if (number < min || number > max) {
       isValid = 0;
-      printf(RED"You must enter a number between %lf and %lf!\n"RESET, min, max);
+      printf(RED"You must enter a number between %Lf and %Lf!\n"RESET, min, max);
+    }
+    if (excludeZero && number == 0) {
+      isValid = 0;
+      printf(RED"You cant enter 0!\n"RESET);
     }
     if (!isValid) {
       printf(RED"Invalid input, try again.\n"RESET);
     }
-  }while (!isValid);
+  } while (!isValid);
   return number;
 }
